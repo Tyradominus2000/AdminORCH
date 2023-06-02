@@ -1,12 +1,15 @@
 import styles from "./Login.module.scss";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { NavLink } from "react-router-dom";
-import { LogIn } from "../../apis/login";
+import { NavLink, redirect } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function Login() {
+  const { signin, user } = useContext(AuthContext);
+
+
   const yupSchema = yup.object({
     email: yup
       .string()
@@ -27,6 +30,7 @@ export default function Login() {
     setPasswordField(document.querySelector("#password"));
     document.querySelector(".fa-eye").classList.add("dblock");
     document.querySelector(".fa-eye-slash").classList.add("dnone");
+    console.log(user);
   }, []);
 
   //If you click on the eye change the input password to text to be visible by user
@@ -65,7 +69,8 @@ export default function Login() {
     console.log(values);
     try {
       clearErrors();
-      await LogIn(values);
+      await signin(values);
+      redirect();
     } catch (message) {
       setError("generic", { type: "generic", message });
     }
