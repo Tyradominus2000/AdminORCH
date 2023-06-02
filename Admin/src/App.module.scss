@@ -1,0 +1,6 @@
+.appContainer {
+  min-height: 100vh;
+  .childrenContainer {
+    height: calc(100vh - 200px);
+  }
+}
