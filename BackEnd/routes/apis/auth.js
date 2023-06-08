@@ -5,7 +5,7 @@ const connection = require("../../database/index");
 
 router.get("/", (req, res) => {
   const { tokenAdmin } = req.cookies;
-  console.log(tokenAdmin);
+  // console.log(tokenAdmin);
   if (tokenAdmin) {
     try {
       const decodedToken = jsonwebtoken.verify(tokenAdmin, keyPub, {
@@ -15,10 +15,8 @@ router.get("/", (req, res) => {
       connection.query(sql, (err, result) => {
         const user = result[0];
         if (user && user.UserPerm === 3) {
-          console.log("here ? if");
           res.send(JSON.stringify(user));
         } else {
-          console.log("here ? else");
           res.send(JSON.stringify(null));
         }
       });

@@ -27,4 +27,47 @@ router.get("/", (req, res) => {
   });
 });
 
+router.post("/update", (req, res) => {
+  const component = req.body;
+  console.log(component);
+  const sql = `UPDATE component_cpu SET ` 
+  +`CPUbrand="${component.brand}", `
+  +`CPUreleaseDate="${component.date}", `
+  +`CPUcodeName="${component.codename}", `
+  +`CPUprice="${component.price}", ` 
+  +`CPUSockets="${component.socket}", ` 
+  +`CPUlithograph="${component.litho}", ` 
+  +`CPUcoreCount="${component.core}", ` 
+  +`CPUthreadCount="${component.thread}", ` 
+  +`CPUcache="${component.cache}", ` 
+  +`CPUclockSpeed="${component.clock}", `
+  +`CPUmaxClockSpeed="${component.maxclock}", ` 
+  +`CPUbus="${component.bus}", ` 
+  +`CPUtypeMemory="${component.memory}", ` 
+  +`CPUmaxMemory="${component.maxMemory}", ` 
+  +`CPUmaxMemoryBandwidth="${component.bandwithMemory}", ` 
+  +`CPUsupportECCMemory="${component.ECCMemory}", ` 
+  +`CPUitgdGraphic="${component.itg}", ` 
+  +`CPUitgdGraphicFreq="${component.itgFreq}", ` 
+  +`CPUitgdGraphicMaxFreq="${component.itgMaxFreq}", ` 
+  +`CPUitgdGraphicSupport4K="${component.itg4k}", ` 
+  +`CPUmaxTDP="${component.tdp}", `
+  +`CPUmaxTemp="${component.maxTemp}" `
+  +`WHERE idComponent = "${component.idComponent}"`;
+
+  try {
+    connection.query(sql, (err, result) => {
+      if(err) throw err
+      console.log(result);
+      const sqlCompo = `UPDATE component SET ComponentName = "${component.name}" WHERE idComponent = "${component.idComponent}"`;
+      connection.query(sqlCompo, (err, result) => {
+        console.log(result);
+        res.send(JSON.stringify("succes"));
+      });
+    });
+  } catch (error) {
+    res.send(JSON.stringify(error));
+  }
+});
+
 module.exports = router;

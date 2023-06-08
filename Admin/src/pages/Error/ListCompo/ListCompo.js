@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { GetComponent } from "../../../apis/components/component";
+import {
+  GetComponent,
+  UpdateComponent,
+} from "../../../apis/components/component";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Loading from "../../../components/Loader/Loading";
@@ -133,7 +136,7 @@ export default function ListCompo() {
     const formContainer = document.getElementById("formContainer");
     formContainer.classList.remove("dnone");
   }
-//   To chnage between focus of the input for the list
+  //   To chnage between focus of the input for the list
   function handleClickCancel() {
     setComponent();
     const formContainer = document.getElementById("formContainer");
@@ -173,9 +176,11 @@ export default function ListCompo() {
       component.CPUmaxTDP.toString() === values.tdp.toString() &&
       component.CPUmaxTemp.toString() === values.maxTemp.toString()
     ) {
-      console.log("TEST");
-    }else{
-
+    } else {
+      const NewComponent = values;
+      NewComponent.idComponent = component.idComponent;
+      UpdateComponent(NewComponent);
+      window.location.reload();
     }
     console.log(component);
   }
