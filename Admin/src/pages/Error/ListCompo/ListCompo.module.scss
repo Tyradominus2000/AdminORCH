@@ -18,11 +18,22 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
-
-.Insert {
-  max-height: 60%;
+.FormContainer {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.315);
+  z-index: 0;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  .Insert {
+    z-index: 1;
+    background-color: var(--hard-blue);
+    max-height: 60%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 }
