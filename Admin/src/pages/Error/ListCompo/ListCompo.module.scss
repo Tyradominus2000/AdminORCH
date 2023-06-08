@@ -1,0 +1,28 @@
+.ListContainer {
+  overflow: auto;
+  max-height: calc(100vh - 300px);
+  border: 3px solid var(--divider);
+  background-color: var(--hard-blue);
+  img {
+    max-width: 50px;
+    max-height: 50px;
+  }
+  button {
+    max-height: 50px;
+  }
+}
+
+.Loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.Insert {
+  max-height: 60%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
