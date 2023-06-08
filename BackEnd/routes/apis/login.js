@@ -20,13 +20,18 @@ router.post("/", (req, res) => {
             expiresIn: 3600 * 24 * 30 * 6,
             algorithm: "RS256",
           });
-          console.log("token : ", token);
-          res.cookie("tokenAdmin", token);
-          res.send(JSON.stringify(result[0]));
+          const user = result[0];
+          delete user.Userpassword;
+          if (user.UserPerm === 3) {
+            console.log("token : ", token);
+            res.cookie("tokenAdmin", token);
+            res.send(JSON.stringify(user));
+          } else {
+            res
+              .status(400)
+              .send(JSON.stringify("Vous n'avez n'avait pas les permissions"));
+          }
         } else {
-          res
-            .status(400)
-            .send(JSON.stringify("Email et/ou mot de passe incorrect"));
         }
       } else {
         res

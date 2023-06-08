@@ -3,12 +3,12 @@ import { useForm } from "react-hook-form";
 import { useContext, useEffect, useState } from "react";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { NavLink, redirect } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 
 export default function Login() {
   const { signin, user } = useContext(AuthContext);
-
+  const navigate = useNavigate();
 
   const yupSchema = yup.object({
     email: yup
@@ -31,6 +31,7 @@ export default function Login() {
     document.querySelector(".fa-eye").classList.add("dblock");
     document.querySelector(".fa-eye-slash").classList.add("dnone");
     console.log(user);
+    // eslint-disable-next-line
   }, []);
 
   //If you click on the eye change the input password to text to be visible by user
@@ -70,7 +71,7 @@ export default function Login() {
     try {
       clearErrors();
       await signin(values);
-      redirect();
+      navigate("/", { replace: true });
     } catch (message) {
       setError("generic", { type: "generic", message });
     }
