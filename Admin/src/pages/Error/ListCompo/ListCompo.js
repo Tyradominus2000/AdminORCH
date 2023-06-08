@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import {
+  CreateComponent,
+  DeleteComponent,
   GetComponent,
   UpdateComponent,
 } from "../../../apis/components/component";
@@ -13,6 +15,7 @@ export default function ListCompo() {
   const [loader, setLoader] = useState(true);
   const [components, setComponents] = useState([]);
   const [component, setComponent] = useState();
+  const [create, setCreate] = useState(false);
 
   const yupSchema = yup.object({
     name: yup.string(),
@@ -139,50 +142,80 @@ export default function ListCompo() {
   //   To chnage between focus of the input for the list
   function handleClickCancel() {
     setComponent();
+    setCreate(false);
     const formContainer = document.getElementById("formContainer");
     formContainer.classList.add("dnone");
   }
-
-  //   SUBMIT
-  async function submit(values) {
-    console.log(values);
-    // If the input have the same value as the components
-    if (
-      component.ComponentName.toString() === values.name.toString() &&
-      component.CPUcodeName.toString() === values.codename.toString() &&
-      component.CPUprice.toString() === values.price.toString() &&
-      component.CPUreleaseDate.toString() === values.date.toString() &&
-      component.CPUbrand.toString() === values.brand.toString() &&
-      component.CPUSockets.toString() === values.socket.toString() &&
-      component.CPUlithograph.toString() === values.litho.toString() &&
-      component.CPUcoreCount.toString() === values.core.toString() &&
-      component.CPUthreadCount.toString() === values.thread.toString() &&
-      component.CPUcache.toString() === values.cache.toString() &&
-      component.CPUclockSpeed.toString() === values.clock.toString() &&
-      component.CPUmaxClockSpeed.toString() === values.maxclock.toString() &&
-      component.CPUbus.toString() === values.bus.toString() &&
-      component.CPUtypeMemory.toString() === values.memory.toString() &&
-      component.CPUmaxMemory.toString() === values.maxMemory.toString() &&
-      component.CPUmaxMemoryBandwidth.toString() ===
-        values.bandwithMemory.toString() &&
-      component.CPUsupportECCMemory.toString() ===
-        values.ECCMemory.toString() &&
-      component.CPUitgdGraphic.toString() === values.itg.toString() &&
-      component.CPUitgdGraphicFreq.toString() === values.itgFreq.toString() &&
-      component.CPUitgdGraphicMaxFreq.toString() ===
-        values.itgMaxFreq.toString() &&
-      component.CPUitgdGraphicSupport4K.toString() ===
-        values.itg4k.toString() &&
-      component.CPUmaxTDP.toString() === values.tdp.toString() &&
-      component.CPUmaxTemp.toString() === values.maxTemp.toString()
-    ) {
-    } else {
-      const NewComponent = values;
-      NewComponent.idComponent = component.idComponent;
-      UpdateComponent(NewComponent);
+  // to delete a component
+  function handleDelete(index) {
+    try {
+      console.log(components[index].idComponent);
+      DeleteComponent(components[index].idComponent);
       window.location.reload();
+    } catch (error) {
+      console.error(error);
     }
-    console.log(component);
+  }
+
+  // Handle the click to create a component
+  function handleCreateComponant() {
+    setCreate(true);
+    const formContainer = document.getElementById("formContainer");
+    formContainer.classList.remove("dnone");
+  }
+
+  //   SUBMIT UPDATAE
+  async function submit(values) {
+    if (!create) {
+      // If the input have the same value as the components
+      if (
+        component.ComponentName.toString() === values.name.toString() &&
+        component.CPUcodeName.toString() === values.codename.toString() &&
+        component.CPUprice.toString() === values.price.toString() &&
+        component.CPUreleaseDate.toString() === values.date.toString() &&
+        component.CPUbrand.toString() === values.brand.toString() &&
+        component.CPUSockets.toString() === values.socket.toString() &&
+        component.CPUlithograph.toString() === values.litho.toString() &&
+        component.CPUcoreCount.toString() === values.core.toString() &&
+        component.CPUthreadCount.toString() === values.thread.toString() &&
+        component.CPUcache.toString() === values.cache.toString() &&
+        component.CPUclockSpeed.toString() === values.clock.toString() &&
+        component.CPUmaxClockSpeed.toString() === values.maxclock.toString() &&
+        component.CPUbus.toString() === values.bus.toString() &&
+        component.CPUtypeMemory.toString() === values.memory.toString() &&
+        component.CPUmaxMemory.toString() === values.maxMemory.toString() &&
+        component.CPUmaxMemoryBandwidth.toString() ===
+          values.bandwithMemory.toString() &&
+        component.CPUsupportECCMemory.toString() ===
+          values.ECCMemory.toString() &&
+        component.CPUitgdGraphic.toString() === values.itg.toString() &&
+        component.CPUitgdGraphicFreq.toString() === values.itgFreq.toString() &&
+        component.CPUitgdGraphicMaxFreq.toString() ===
+          values.itgMaxFreq.toString() &&
+        component.CPUitgdGraphicSupport4K.toString() ===
+          values.itg4k.toString() &&
+        component.CPUmaxTDP.toString() === values.tdp.toString() &&
+        component.CPUmaxTemp.toString() === values.maxTemp.toString()
+      ) {
+      } else {
+        try {
+          const NewComponent = values;
+          NewComponent.idComponent = component.idComponent;
+          UpdateComponent(NewComponent);
+          window.location.reload();
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    }else{
+      try {
+        const NewComponent = values;
+        CreateComponent(NewComponent);
+        window.location.reload();
+      } catch (error) {
+        console.error(error);
+      }
+    }
   }
 
   return (
@@ -195,6 +228,7 @@ export default function ListCompo() {
         <>
           <div id="list">
             <h2>ListCompo</h2>
+            <button onClick={handleCreateComponant}>CREATE COMPONENT</button>
             {components ? (
               <>
                 <ul className={`d-flex flex-column ${styles.ListContainer}`}>
@@ -250,6 +284,13 @@ export default function ListCompo() {
                       >
                         Edit
                       </button>
+                      <button
+                        className="mx10"
+                        type="button"
+                        onClick={() => handleDelete(i)}
+                      >
+                        Delete
+                      </button>
                     </li>
                   ))}
                 </ul>
@@ -266,7 +307,14 @@ export default function ListCompo() {
               <form onSubmit={handleSubmit(submit)}>
                 <div>
                   <img />
-                  <h2>Id : hfidhfidh</h2>
+                  {create ? (
+                    <h2>Create a component</h2>
+                  ) : (
+                    <h2>
+                      Id : {component ? component.idCPU : null}/ Id Component :
+                      {component ? component.idComponent : null}
+                    </h2>
+                  )}
                 </div>
                 <div
                   className={`d-flex justify-content-center align-items-center`}
