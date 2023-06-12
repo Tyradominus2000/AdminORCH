@@ -4,10 +4,10 @@ import {
   DeleteComponent,
   GetComponent,
   UpdateComponent,
-} from "../../../apis/components/component";
+} from "../../apis/components/component";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Loading from "../../../components/Loader/Loading";
+import Loading from "../../components/Loader/Loading";
 import styles from "./ListCompo.module.scss";
 import "./ListCompo.scss";
 import { useForm } from "react-hook-form";
@@ -126,6 +126,46 @@ export default function ListCompo() {
     console.log(component);
   }, [component]);
   //DEBUG
+
+  // Sort the tab by id
+  function sortById() {
+    if (components[0].idCPU < components[components.length-1].idCPU) {
+      setComponents([...components.sort((c, cs) => cs.idCPU - c.idCPU)]);
+    } else {
+      setComponents([...components.sort((c, cs) => c.idCPU - cs.idCPU)]);
+    }
+  }
+  // Sort the tab by name
+  function sortByName() {
+    setComponents([
+      ...components.sort((c, cs) =>
+        c.ComponentName.localeCompare(cs.ComponentName)
+      ),
+    ]);
+  }
+  // Sort the tab by litho
+  function sortByLitho() {
+    if (
+      parseInt(components[0].CPUlithograph.match(/\d+/)) <=
+      parseInt(components[components.length-1].CPUlithograph.match(/\d+/))
+    ) {
+      setComponents([
+        ...components.sort(
+          (c, cs) =>
+            parseInt(cs.CPUlithograph.match(/\d+/)) -
+            parseInt(c.CPUlithograph.match(/\d+/))
+        ),
+      ]);
+    } else {
+      setComponents([
+        ...components.sort(
+          (c, cs) =>
+            parseInt(c.CPUlithograph.match(/\d+/)) -
+            parseInt(cs.CPUlithograph.match(/\d+/))
+        ),
+      ]);
+    }
+  }
 
   //   To change between focus of the list to the input
   function handleClick(index) {
@@ -254,39 +294,49 @@ export default function ListCompo() {
                 <div className={`dblock ${styles.ListContainer}`}>
                   {/* Base du table */}
                   <div className="d-flex parent">
-                    <div className="W100 mx10">Image</div>
-                    <div className="W100">Id</div>
-                    <div className="W100">Name</div>
-                    <div className="W100">CodeName</div>
-                    <div className="W100">Price</div>
-                    <div className="W100">Date</div>
-                    <div className="W100">Brand</div>
-                    <div className="W100">Socket</div>
-                    <div className="W100">Lithographie</div>
-                    <div className="W100">CoreCount</div>
-                    <div className="W100">ThreadCount</div>
-                    <div className="W100">Cache</div>
-                    <div className="W100">ClockSpeed</div>
-                    <div className="W150">MaxClockSpeed</div>
-                    <div className="W100">Bus</div>
-                    <div className="W100">Memory Type</div>
-                    <div className="W100">Max Memory</div>
-                    <div className="W100">Memory BandWith</div>
-                    <div className="W100">Number of Memory Channel</div>
-                    <div className="W100">Support ECC Memory</div>
-                    <div className="W150">IntegratedGraphic</div>
-                    <div className="W150">IntegratedGraphic Freq</div>
-                    <div className="W150">IntegratedGraphic Max Freq</div>
-                    <div className="W150">
+                    <div className="W100 HeadTab mx10">Image</div>
+                    <div className="W100 HeadTab" onClick={sortById}>
+                      Id
+                    </div>
+                    <div className="W100 HeadTab" onClick={sortByName}>
+                      Name
+                    </div>
+                    <div className="W100 HeadTab">CodeName</div>
+                    <div className="W100 HeadTab">Price</div>
+                    <div className="W100 HeadTab">Date</div>
+                    <div className="W100 HeadTab">Brand</div>
+                    <div className="W100 HeadTab">Socket</div>
+                    <div className="W100 HeadTab" onClick={sortByLitho}>
+                      Lithographie
+                    </div>
+                    <div className="W100 HeadTab">CoreCount</div>
+                    <div className="W100 HeadTab">ThreadCount</div>
+                    <div className="W100 HeadTab">Cache</div>
+                    <div className="W100 HeadTab">ClockSpeed</div>
+                    <div className="W150 HeadTab">MaxClockSpeed</div>
+                    <div className="W100 HeadTab">Bus</div>
+                    <div className="W100 HeadTab">Memory Type</div>
+                    <div className="W100 HeadTab">Max Memory</div>
+                    <div className="W100 HeadTab">Memory BandWith</div>
+                    <div className="W100 HeadTab">Number of Memory Channel</div>
+                    <div className="W100 HeadTab">Support ECC Memory</div>
+                    <div className="W150 HeadTab">IntegratedGraphic</div>
+                    <div className="W150 HeadTab">IntegratedGraphic Freq</div>
+                    <div className="W150 HeadTab">
+                      IntegratedGraphic Max Freq
+                    </div>
+                    <div className="W150 HeadTab">
                       IntegratedGraphic Max Memory
                     </div>
-                    <div className="W150">IntegratedGraphic 4k support</div>
-                    <div className="W100">TDP</div>
-                    <div className="W100">Max Temp</div>
+                    <div className="W150 HeadTab">
+                      IntegratedGraphic 4k support
+                    </div>
+                    <div className="W100 HeadTab">TDP</div>
+                    <div className="W100 HeadTab">Max Temp</div>
                   </div>
                   <div className="">
                     {components.map((c, i) => (
-                      <div className="dblock parent my20" key={c.idComponent}>
+                      <div className="dblock parent" key={c.idComponent}>
                         <div className="W100 mx10">
                           <img src={c.ComponentImage} alt={c.idComponent} />
                         </div>
@@ -313,13 +363,11 @@ export default function ListCompo() {
                         <div className="W150">{c.CPUitgdGraphic}</div>
                         <div className="W150">{c.CPUitgdGraphicFreq}</div>
                         <div className="W150">{c.CPUitgdGraphicMaxFreq}</div>
-                        <div className="W150">
-                          {c.CPUitgdGraphicMaxMemory}
-                        </div>
+                        <div className="W150">{c.CPUitgdGraphicMaxMemory}</div>
                         <div className="W150">{c.CPUitgdGraphicSupport4K}</div>
                         <div className="W100">{c.CPUmaxTDP}</div>
                         <div className="W100">{c.CPUmaxTemp}</div>
-                        <div className="W100 buttonContainer d-flex">
+                        <div className="buttonContainer d-flex">
                           <button
                             className="btn btn-primary mx10"
                             type="button"

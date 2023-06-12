@@ -4,7 +4,7 @@ import Error from "../pages/Error/Error";
 import Login from "../pages/Login/Login";
 import { userLoader } from "../loader/userLoader";
 import { loginLoader } from "../loader/loginLoader";
-import ListCompo from "../pages/Error/ListCompo/ListCompo";
+import ListCompo from "../pages/ListCompo/ListCompo";
 import { protectedRoute } from "../loader/protectedRoute";
 
 export const router = createBrowserRouter([

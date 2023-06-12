@@ -1,0 +1,25 @@
+.parent {
+  display: grid;
+  grid-template-columns: repeat(27, 2fr);
+  .W100 {
+    width: 100px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .W150 {
+    width: 150px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .HeadTab{
+    cursor: pointer;
+  }
+  .buttonContainer {
+    width: 100px !important;
+    margin: 5px 0 5px 0;
+    // margin-left: 150px;
+    position: relative;
+  }
+}
