@@ -9,6 +9,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Loading from "../../../components/Loader/Loading";
 import styles from "./ListCompo.module.scss";
+import "./ListCompo.scss";
 import { useForm } from "react-hook-form";
 
 export default function ListCompo() {
@@ -237,84 +238,117 @@ export default function ListCompo() {
         </div>
       ) : (
         <>
-          <div id="list">
-            <h2>ListCompo</h2>
-            <button onClick={handleCreateComponant}>CREATE COMPONENT</button>
+          <div
+            id="list"
+            className={`flex-column justify-content-center ${styles.ParentContainer}`}
+          >
+            <button
+              className="btn btn-primary-reverse"
+              onClick={handleCreateComponant}
+            >
+              CREATE COMPONENT
+            </button>
             {/* Components affichage */}
             {components ? (
               <>
-                <ul className={`d-flex flex-column ${styles.ListContainer}`}>
-                  {components.map((c, i) => (
-                    <li key={c.idComponent} className="d-flex flex-fill my20">
-                      <img
-                        className="mx10"
-                        src={c.ComponentImage}
-                        alt={c.idComponent}
-                      />
-                      <ul className="d-flex flex-fill flex-column">
-                        <li>Id : {c.idCPU}</li>
-                        <li>Name : {c.ComponentName}</li>
-                        <li>CodeName : {c.CPUcodeName}</li>
-                        <li>Price : {c.CPUprice}</li>
-                        <li>Date : {c.CPUreleaseDate}</li>
-                        <li>Brand : {c.CPUbrand}</li>
-                        <li>Socket : {c.CPUSockets}</li>
-                        <li>Lithographie : {c.CPUlithograph}</li>
-                        <li>CoreCount : {c.CPUcoreCount}</li>
-                        <li>Thread Count: {c.CPUthreadCount}</li>
-                        <li>Cache : {c.CPUcache}</li>
-                        <li>ClockSpeed : {c.CPUclockSpeed}</li>
-                        <li>Max clockSpeed : {c.CPUmaxClockSpeed}</li>
-                        <li>bus : {c.CPUbus}</li>
-                        <li>Memory Type: {c.CPUtypeMemory}</li>
-                        <li>Max Memory : {c.CPUmaxMemory}</li>
-                        <li>Memory Bandwith: {c.CPUmaxMemoryBandwidth}</li>
-                        <li>
-                          Number of Memory Channel: {c.CPUnumberMemoryChannel}
-                        </li>
-                        <li> Support ECC memory: {c.CPUsupportECCMemory}</li>
-                        <li>IntegratedGraphic : {c.CPUitgdGraphic}</li>
-                        <li>IntegratedGraphic Freq : {c.CPUitgdGraphicFreq}</li>
-                        <li>
-                          IntegratedGraphic Max Freq : {c.CPUitgdGraphicMaxFreq}
-                        </li>
-                        <li>
-                          IntegratedGraphic Max Memory :{" "}
+                <div className={`dblock ${styles.ListContainer}`}>
+                  {/* Base du table */}
+                  <div className="d-flex parent">
+                    <div className="W100 mx10">Image</div>
+                    <div className="W100">Id</div>
+                    <div className="W100">Name</div>
+                    <div className="W100">CodeName</div>
+                    <div className="W100">Price</div>
+                    <div className="W100">Date</div>
+                    <div className="W100">Brand</div>
+                    <div className="W100">Socket</div>
+                    <div className="W100">Lithographie</div>
+                    <div className="W100">CoreCount</div>
+                    <div className="W100">ThreadCount</div>
+                    <div className="W100">Cache</div>
+                    <div className="W100">ClockSpeed</div>
+                    <div className="W150">MaxClockSpeed</div>
+                    <div className="W100">Bus</div>
+                    <div className="W100">Memory Type</div>
+                    <div className="W100">Max Memory</div>
+                    <div className="W100">Memory BandWith</div>
+                    <div className="W100">Number of Memory Channel</div>
+                    <div className="W100">Support ECC Memory</div>
+                    <div className="W150">IntegratedGraphic</div>
+                    <div className="W150">IntegratedGraphic Freq</div>
+                    <div className="W150">IntegratedGraphic Max Freq</div>
+                    <div className="W150">
+                      IntegratedGraphic Max Memory
+                    </div>
+                    <div className="W150">IntegratedGraphic 4k support</div>
+                    <div className="W100">TDP</div>
+                    <div className="W100">Max Temp</div>
+                  </div>
+                  <div className="">
+                    {components.map((c, i) => (
+                      <div className="dblock parent my20" key={c.idComponent}>
+                        <div className="W100 mx10">
+                          <img src={c.ComponentImage} alt={c.idComponent} />
+                        </div>
+                        {/* Liste of all the spec */}
+                        <div className="W100">{c.idCPU}</div>
+                        <div className="W100">{c.ComponentName}</div>
+                        <div className="W100">{c.CPUcodeName}</div>
+                        <div className="W100">{c.CPUprice}</div>
+                        <div className="W100">{c.CPUreleaseDate}</div>
+                        <div className="W100">{c.CPUbrand}</div>
+                        <div className="W100">{c.CPUSockets}</div>
+                        <div className="W100">{c.CPUlithograph}</div>
+                        <div className="W100">{c.CPUcoreCount}</div>
+                        <div className="W100">{c.CPUthreadCount}</div>
+                        <div className="W100">{c.CPUcache}</div>
+                        <div className="W100">{c.CPUclockSpeed}</div>
+                        <div className="W150">{c.CPUmaxClockSpeed}</div>
+                        <div className="W100">{c.CPUbus}</div>
+                        <div className="W100">{c.CPUtypeMemory}</div>
+                        <div className="W100">{c.CPUmaxMemory}</div>
+                        <div className="W100">{c.CPUmaxMemoryBandwidth}</div>
+                        <div className="W100">{c.CPUnumberMemoryChannel}</div>
+                        <div className="W100">{c.CPUsupportECCMemory}</div>
+                        <div className="W150">{c.CPUitgdGraphic}</div>
+                        <div className="W150">{c.CPUitgdGraphicFreq}</div>
+                        <div className="W150">{c.CPUitgdGraphicMaxFreq}</div>
+                        <div className="W150">
                           {c.CPUitgdGraphicMaxMemory}
-                        </li>
-                        <li>
-                          IntegratedGraphic 4k support :{" "}
-                          {c.CPUitgdGraphicSupport4K}
-                        </li>
-                        <li>TDP: {c.CPUmaxTDP}</li>
-                        <li>Max Temp: {c.CPUmaxTemp}</li>
-                      </ul>
-                      <button
-                        className="mx10"
-                        type="button"
-                        onClick={() => handleClick(i)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="mx10"
-                        type="button"
-                        onClick={() => handleDeletePopUp(i)}
-                      >
-                        Delete
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+                        </div>
+                        <div className="W150">{c.CPUitgdGraphicSupport4K}</div>
+                        <div className="W100">{c.CPUmaxTDP}</div>
+                        <div className="W100">{c.CPUmaxTemp}</div>
+                        <div className="W100 buttonContainer d-flex">
+                          <button
+                            className="btn btn-primary mx10"
+                            type="button"
+                            onClick={() => handleClick(i)}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="btn btn-error mx10"
+                            type="button"
+                            onClick={() => handleDeletePopUp(i)}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </>
             ) : (
               <>Pas de components</>
             )}
           </div>
+          {/* Form for create and edit */}
           <div className={`${styles.FormContainer} dnone`} id="formContainer">
             <div
               id="form"
-              className={`${styles.Insert} d-flex flex-column justify-content-center align-items-center`}
+              className={`${styles.Insert} d-flex flex-column justify-content-center align-items-center p10`}
             >
               <form onSubmit={handleSubmit(submit)}>
                 <div>
@@ -507,11 +541,15 @@ export default function ListCompo() {
                     ></input>
                   </div>
                 </div>
-                <div className="d-flex flex-content-end">
-                  <button type="button" onClick={handleClickCancel}>
+                <div className="d-flex justify-content-end m10">
+                  <button
+                    type="button"
+                    className="btn btn-primary-reverse mx10"
+                    onClick={handleClickCancel}
+                  >
                     Cancel
                   </button>
-                  <button>Save</button>
+                  <button className="btn btn-primary mx10">Save</button>
                 </div>
               </form>
             </div>
