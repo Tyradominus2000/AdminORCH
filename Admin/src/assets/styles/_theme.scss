@@ -20,6 +20,12 @@
     border: 2px solid var(--primary);
     border-radius: 5px;
   }
+  &-error{
+    background-color: var(--error);
+    color: var(--text-color);
+    border: 2px solid black;
+    border-radius: 5px;
+  }
 }
 
 
@@ -40,3 +46,7 @@
   display: none;
 }
 
+a{
+  text-decoration: none;
+  color: var(--text-color);
+}

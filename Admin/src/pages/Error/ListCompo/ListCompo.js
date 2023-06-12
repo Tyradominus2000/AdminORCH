@@ -73,14 +73,7 @@ export default function ListCompo() {
     maxTemp: "",
   };
 
-  const {
-    register,
-    reset,
-    handleSubmit,
-    // setError,
-    // clearErrors,
-    // formState: { errors },
-  } = useForm({
+  const { register, handleSubmit } = useForm({
     defaultValues,
     values: {
       name: component ? component.ComponentName : null,
@@ -146,11 +139,25 @@ export default function ListCompo() {
     const formContainer = document.getElementById("formContainer");
     formContainer.classList.add("dnone");
   }
+
+  // to show a pop up before deleting
+  function handleDeletePopUp(index) {
+    const PopUp = document.getElementById("PopUp");
+    PopUp.classList.remove("dnone");
+    setComponent(components[index]);
+  }
+
+  // to hide pop up
+  function handleDeletePopUpCancel() {
+    const PopUp = document.getElementById("PopUp");
+    PopUp.classList.add("dnone");
+    setComponent("");
+  }
+
   // to delete a component
-  function handleDelete(index) {
+  function handleDelete() {
     try {
-      console.log(components[index].idComponent);
-      DeleteComponent(components[index].idComponent);
+      DeleteComponent(component.idComponent);
       window.location.reload();
     } catch (error) {
       console.error(error);
@@ -164,8 +171,9 @@ export default function ListCompo() {
     formContainer.classList.remove("dnone");
   }
 
-  //   SUBMIT UPDATAE
+  //   SUBMIT UPDATE AND CREATE
   async function submit(values) {
+    // Dans le cas ou j'édit
     if (!create) {
       // If the input have the same value as the components
       if (
@@ -197,7 +205,9 @@ export default function ListCompo() {
         component.CPUmaxTDP.toString() === values.tdp.toString() &&
         component.CPUmaxTemp.toString() === values.maxTemp.toString()
       ) {
+        // Si les deux objet sont les même je ne change rien
       } else {
+        // Sinon j'update
         try {
           const NewComponent = values;
           NewComponent.idComponent = component.idComponent;
@@ -207,7 +217,8 @@ export default function ListCompo() {
           console.error(error);
         }
       }
-    }else{
+      // Dans le case ou je crée
+    } else {
       try {
         const NewComponent = values;
         CreateComponent(NewComponent);
@@ -229,6 +240,7 @@ export default function ListCompo() {
           <div id="list">
             <h2>ListCompo</h2>
             <button onClick={handleCreateComponant}>CREATE COMPONENT</button>
+            {/* Components affichage */}
             {components ? (
               <>
                 <ul className={`d-flex flex-column ${styles.ListContainer}`}>
@@ -287,7 +299,7 @@ export default function ListCompo() {
                       <button
                         className="mx10"
                         type="button"
-                        onClick={() => handleDelete(i)}
+                        onClick={() => handleDeletePopUp(i)}
                       >
                         Delete
                       </button>
@@ -306,7 +318,10 @@ export default function ListCompo() {
             >
               <form onSubmit={handleSubmit(submit)}>
                 <div>
-                  <img />
+                  <img
+                    src={component ? component.ComponentImage : null}
+                    alt={component ? component.idCPU : null}
+                  />
                   {create ? (
                     <h2>Create a component</h2>
                   ) : (
@@ -319,6 +334,7 @@ export default function ListCompo() {
                 <div
                   className={`d-flex justify-content-center align-items-center`}
                 >
+                  {/* Input Field 1 */}
                   <div className="d-flex flex-column">
                     <label>Name</label>
                     <input
@@ -401,6 +417,7 @@ export default function ListCompo() {
                       defaultValue={component ? component.CPUbus : null}
                     ></input>
                   </div>
+                  {/* Input Field 2 */}
                   <div className="d-flex flex-column mx10">
                     <label>Memory Type</label>
                     <input
@@ -497,6 +514,29 @@ export default function ListCompo() {
                   <button>Save</button>
                 </div>
               </form>
+            </div>
+          </div>
+          {/* PopUp to be sure to delete */}
+          <div id="PopUp" className={`${styles.PopUpContainer} dnone`}>
+            <div className={`d-flex flex-column p10 ${styles.PopUpDelete}`}>
+              <h2>
+                Are you sure you want to delete{" "}
+                {component
+                  ? "ID : " + component.idCPU + "/" + component.ComponentName
+                  : null}{" "}
+                ?
+              </h2>
+              <div className="d-flex justify-content-end m10">
+                <button
+                  className="btn btn-primary-reverse mx10"
+                  onClick={handleDeletePopUpCancel}
+                >
+                  Cancel
+                </button>
+                <button className="btn btn-error mx10" onClick={handleDelete}>
+                  Delete
+                </button>
+              </div>
             </div>
           </div>
         </>

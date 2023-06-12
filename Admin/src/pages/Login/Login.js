@@ -78,8 +78,8 @@ export default function Login() {
   }
   return (
     <>
-      <div className="m10">
-        <form className={`d-flex flex-column`} onSubmit={handleSubmit(submit)}>
+      <div className={`d-flex m10 flex-fill ${styles.FormContainer}`}>
+        <form className={`d-flex flex-fill flex-column justify-content-center align-items-center`} onSubmit={handleSubmit(submit)}>
           <div className={`${styles.Login}`}>
             <div>
               <h2 className={`my20`}>Login in</h2>

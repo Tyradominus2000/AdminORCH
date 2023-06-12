@@ -35,5 +35,28 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    form {
+      background-color: var(--hard-blue);
+    }
+  }
+}
+.PopUpContainer {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.315);
+  z-index: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  .PopUpDelete {
+    position: absolute;
+    color: var(--error);
+    border-radius: 15px;
+    background-color: var(--blue-2);
+    z-index: 5;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 }
