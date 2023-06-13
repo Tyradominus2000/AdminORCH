@@ -275,110 +275,184 @@ export default function ListCompo() {
     // Je renvoie l'objet
     return newSorting;
   }
+  function resetAllArrow() {
+    const allHeader = document.getElementsByClassName("HeadTab");
+    console.log(allHeader);
+    const elementArray = Array.from(allHeader);
+    elementArray.forEach((header) => {
+      header.classList.remove("sorting");
+      header.classList.remove("sorting-reverse");
+    });
+  }
+
+  function setArrow(target, parameter) {
+    resetAllArrow();
+    if (sorting[parameter] === null) {
+      target.classList.add("sorting");
+    } else if (sorting[parameter] === false) {
+      target.classList.add("sorting");
+      target.classList.remove("sorting-reverse");
+    } else {
+      target.classList.remove("sorting");
+      target.classList.add("sorting-reverse");
+    }
+  }
 
   // Sort the tab by id
-  function sortById() {
+  function sortById(event) {
     setSorting(SortingObject("idCPU"));
+    resetAllArrow();
+    setArrow(event.target, "idCPU");
   }
   // Sort the tab by name
-  function sortByName() {
+  function sortByName(event) {
     setSorting(SortingObject("ComponentName"));
+    resetAllArrow();
+    setArrow(event.target, "ComponentName");
   }
   // Sort the tab by CodeName
-  function sortByCodeName() {
+  function sortByCodeName(event) {
     setSorting(SortingObject("CPUcodeName"));
+    resetAllArrow();
+    setArrow(event.target, "CPUcodeName");
   }
   // Sort the tab by Price
-  function sortByPrice() {
+  function sortByPrice(event) {
     setSorting(SortingObject("CPUprice"));
+    resetAllArrow();
+    setArrow(event.target, "CPUprice");
   }
   // Sort the tab by Date
-  function sortByDate() {
+  function sortByDate(event) {
     setSorting(SortingObject("CPUreleaseDate"));
+    resetAllArrow();
+    setArrow(event.target, "CPUreleaseDate");
   }
   // Sort the tab by Brand
-  function sortByBrand() {
+  function sortByBrand(event) {
     setSorting(SortingObject("CPUbrand"));
+    resetAllArrow();
+    setArrow(event.target, "CPUbrand");
   }
   // Sort the tab by Socket
-  function sortBySocket() {
+  function sortBySocket(event) {
     setSorting(SortingObject("CPUSockets"));
+    resetAllArrow();
+    setArrow(event.target, "CPUSockets");
   }
   // Sort the tab by litho
-  function sortByLitho() {
+  function sortByLitho(event) {
     setSorting(SortingObject("CPUlithograph"));
+    resetAllArrow();
+    setArrow(event.target, "CPUlithograph");
   }
   // Sort the tab by Core count
-  function sortByCoreCount() {
+  function sortByCoreCount(event) {
     setSorting(SortingObject("CPUcoreCount"));
+    resetAllArrow();
+    setArrow(event.target, "CPUcoreCount");
   }
   // Sort the tab by Thread Count
-  function sortByThreadCount() {
+  function sortByThreadCount(event) {
     setSorting(SortingObject("CPUthreadCount"));
+    resetAllArrow();
+    setArrow(event.target, "CPUthreadCount");
   }
   // Sort the tab by Cache size
-  function sortByCache() {
+  function sortByCache(event) {
     setSorting(SortingObject("CPUcache"));
+    resetAllArrow();
+    setArrow(event.target, "CPUcache");
   }
   // Sort the tab by clock speed
-  function sortByClockSpeed() {
+  function sortByClockSpeed(event) {
     setSorting(SortingObject("CPUclockSpeed"));
+    resetAllArrow();
+    setArrow(event.target, "CPUclockSpeed");
   }
   // Sort the tab by Max clock Speed
-  function sortByMaxClockSpeed() {
+  function sortByMaxClockSpeed(event) {
     setSorting(SortingObject("CPUmaxClockSpeed"));
+    resetAllArrow();
+    setArrow(event.target, "CPUmaxClockSpeed");
   }
   // Sort the tab by Bus size
-  function sortByBus() {
+  function sortByBus(event) {
     setSorting(SortingObject("CPUbus"));
+    resetAllArrow();
+    setArrow(event.target, "CPUbus");
   }
   // Sort the tab by Memory Type
-  function sortByMemoryType() {
+  function sortByMemoryType(event) {
     setSorting(SortingObject("CPUtypeMemory"));
+    resetAllArrow();
+    setArrow(event.target, "CPUtypeMemory");
   }
   // Sort the tab by Max Memory
-  function sortByMaxMem() {
+  function sortByMaxMem(event) {
     setSorting(SortingObject("CPUmaxMemory"));
+    resetAllArrow();
+    setArrow(event.target, "CPUmaxMemory");
   }
   // Sort the tab by Memory bandwith
-  function sortByMemoryBandwith() {
+  function sortByMemoryBandwith(event) {
     setSorting(SortingObject("CPUmaxMemoryBandwidth"));
+    resetAllArrow();
+    setArrow(event.target, "CPUmaxMemoryBandwidth");
   }
   // Sort the tab by Memory Channel
-  function sortByMemoryChannel() {
+  function sortByMemoryChannel(event) {
     setSorting(SortingObject("CPUnumberMemoryChannel"));
+    resetAllArrow();
+    setArrow(event.target, "CPUnumberMemoryChannel");
   }
   // Sort the tab by ECC memory support
-  function sortByECCMemory() {
+  function sortByECCMemory(event) {
     setSorting(SortingObject("CPUsupportECCMemory"));
+    resetAllArrow();
+    setArrow(event.target, "CPUsupportECCMemory");
   }
   // Sort the tab by ITG
-  function sortByITG() {
+  function sortByITG(event) {
     setSorting(SortingObject("CPUitgdGraphic"));
+    resetAllArrow();
+    setArrow(event.target, "CPUitgdGraphic");
   }
   // Sort the tab by litho
-  function sortByITGFreq() {
+  function sortByITGFreq(event) {
     setSorting(SortingObject("CPUitgdGraphicFreq"));
+    resetAllArrow();
+    setArrow(event.target, "CPUitgdGraphicFreq");
   }
   // Sort the tab by ITG max frequence
-  function sortByITGMaxFreq() {
+  function sortByITGMaxFreq(event) {
     setSorting(SortingObject("CPUitgdGraphicMaxFreq"));
+    resetAllArrow();
+    setArrow(event.target, "CPUitgdGraphicMaxFreq");
   }
   // Sort the tab by ITG max memory
-  function sortByITGMaxMem() {
+  function sortByITGMaxMem(event) {
     setSorting(SortingObject("CPUitgdGraphicMaxMemory"));
+    resetAllArrow();
+    setArrow(event.target, "CPUitgdGraphicMaxMemory");
   }
   // Sort the tab by ITG4K
-  function sortByITG4k() {
+  function sortByITG4k(event) {
     setSorting(SortingObject("CPUitgdGraphicSupport4K"));
+    resetAllArrow();
+    setArrow(event.target, "CPUitgdGraphicSupport4K");
   }
   // Sort the tab by TDP
-  function sortByTDP() {
+  function sortByTDP(event) {
     setSorting(SortingObject("CPUmaxTDP"));
+    resetAllArrow();
+    setArrow(event.target, "CPUmaxTDP");
   }
   // Sort the tab by Temp
-  function sortByTemp() {
+  function sortByTemp(event) {
     setSorting(SortingObject("CPUmaxTemp"));
+    resetAllArrow();
+    setArrow(event.target, "CPUmaxTemp");
   }
 
   /* FUNCTION  TO HANDLE INPUT */
@@ -510,7 +584,7 @@ export default function ListCompo() {
                   {/* Base du table */}
                   <div className="d-flex parent">
                     <div className="W100 HeadTab mx10">Image</div>
-                    <div className="W100 HeadTab" onClick={sortById}>
+                    <div className="W100 HeadTab sorting" onClick={sortById}>
                       Id
                     </div>
                     <div className="W100 HeadTab" onClick={sortByName}>
