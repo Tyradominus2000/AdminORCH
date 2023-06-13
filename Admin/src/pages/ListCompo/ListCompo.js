@@ -14,9 +14,41 @@ import { useForm } from "react-hook-form";
 
 export default function ListCompo() {
   const [loader, setLoader] = useState(true);
+  // List of components
   const [components, setComponents] = useState([]);
+  // Component selected
   const [component, setComponent] = useState();
+  // To know if we create or edit component
   const [create, setCreate] = useState(false);
+  // Sorting object
+  const [sorting, setSorting] = useState({
+    idCPU: true,
+    ComponentName: null,
+    CPUcodeName: null,
+    CPUprice: null,
+    CPUreleaseDate: null,
+    CPUbrand: null,
+    CPUSockets: null,
+    CPUlithograph: null,
+    CPUcoreCount: null,
+    CPUthreadCount: null,
+    CPUcache: null,
+    CPUclockSpeed: null,
+    CPUmaxClockSpeed: null,
+    CPUbus: null,
+    CPUtypeMemory: null,
+    CPUmaxMemory: null,
+    CPUmaxMemoryBandwidth: null,
+    CPUnumberMemoryChannel: null,
+    CPUsupportECCMemory: null,
+    CPUitgdGraphic: null,
+    CPUitgdGraphicFreq: null,
+    CPUitgdGraphicMaxFreq: null,
+    CPUitgdGraphicMaxMemory: null,
+    CPUitgdGraphicSupport4K: null,
+    CPUmaxTDP: null,
+    CPUmaxTemp: null,
+  });
 
   const yupSchema = yup.object({
     name: yup.string(),
@@ -127,46 +159,229 @@ export default function ListCompo() {
   }, [component]);
   //DEBUG
 
+  useEffect(() => {
+    console.log(sorting);
+    // Sort alphabeticly ascending the component with given parameter
+    function sortAlphaAsc(parameter) {
+      setComponents([
+        ...components.sort((c, cs) =>
+          c[parameter].localeCompare(cs[parameter])
+        ),
+      ]);
+    }
+    // Sort alphabeticly descending the component with given parameter
+    function sortAlphaDesc(parameter) {
+      setComponents([
+        ...components.sort((c, cs) =>
+          cs[parameter].localeCompare(c[parameter])
+        ),
+      ]);
+    }
+    // Sort number ascending the component with given parameter
+    function sortNumbAsc(parameter) {
+      let int = false;
+      // eslint-disable-next-line
+      components.map((c) => {
+        if (Number.isInteger(c[parameter])) {
+          int = true;
+        }
+      });
+      if (int) {
+        setComponents([
+          ...components.sort((c, cs) => c[parameter] - cs[parameter]),
+        ]);
+      } else {
+        setComponents([
+          ...components.sort(
+            (c, cs) =>
+              parseInt(c[parameter].match(/\d+/)) -
+              parseInt(cs[parameter].match(/\d+/))
+          ),
+        ]);
+      }
+    }
+    // Sort number descending the component with given parameter
+    function sortNumbDesc(parameter) {
+      let int = false;
+      // eslint-disable-next-line
+      components.map((c) => {
+        if (Number.isInteger(c[parameter])) {
+          int = true;
+        }
+      });
+      if (int) {
+        setComponents([
+          ...components.sort((c, cs) => cs[parameter] - c[parameter]),
+        ]);
+      } else {
+        setComponents([
+          ...components.sort(
+            (c, cs) =>
+              parseInt(cs[parameter].match(/\d+/)) -
+              parseInt(c[parameter].match(/\d+/))
+          ),
+        ]);
+      }
+    }
+    // Get the object sorting and choose how to sort
+    Object.keys(sorting).forEach((key) => {
+      if (
+        [
+          "ComponentName",
+          "CPUcodeName",
+          "CPUbrand",
+          "CPUSockets",
+          "CPUtypeMemory",
+          "CPUitgdGraphic",
+        ].includes(key)
+      ) {
+        if (sorting[key] === true) {
+          sortAlphaAsc(key);
+        } else if (sorting[key] === false) {
+          sortAlphaDesc(key);
+        }
+      } else {
+        if (sorting[key] === true) {
+          sortNumbAsc(key);
+        } else if (sorting[key] === false) {
+          sortNumbDesc(key);
+        }
+      }
+    });
+    // eslint-disable-next-line
+  }, [sorting]);
+
+  /*FUNCTION TO SORT */
+  function SortingObject(keys) {
+    const newSorting = Object.keys(sorting).reduce((acc, key) => {
+      // Si la clé correspond a la clé clické
+      if (key === keys) {
+        // Si elle est null je l'initie a true
+        if (acc[key] === null) {
+          console.log("null");
+          acc[key] = true;
+          // Sinon j'inverse la valeur
+        } else {
+          console.log("false/true");
+          acc[key] = !sorting[key];
+        }
+        // Je met tous les autres clé a null
+      } else {
+        acc[key] = null;
+      }
+      // Je renvoie le tableau
+      return acc;
+    }, {});
+    // Je renvoie l'objet
+    return newSorting;
+  }
+
   // Sort the tab by id
   function sortById() {
-    if (components[0].idCPU < components[components.length-1].idCPU) {
-      setComponents([...components.sort((c, cs) => cs.idCPU - c.idCPU)]);
-    } else {
-      setComponents([...components.sort((c, cs) => c.idCPU - cs.idCPU)]);
-    }
+    setSorting(SortingObject("idCPU"));
   }
   // Sort the tab by name
   function sortByName() {
-    setComponents([
-      ...components.sort((c, cs) =>
-        c.ComponentName.localeCompare(cs.ComponentName)
-      ),
-    ]);
+    setSorting(SortingObject("ComponentName"));
+  }
+  // Sort the tab by CodeName
+  function sortByCodeName() {
+    setSorting(SortingObject("CPUcodeName"));
+  }
+  // Sort the tab by Price
+  function sortByPrice() {
+    setSorting(SortingObject("CPUprice"));
+  }
+  // Sort the tab by Date
+  function sortByDate() {
+    setSorting(SortingObject("CPUreleaseDate"));
+  }
+  // Sort the tab by Brand
+  function sortByBrand() {
+    setSorting(SortingObject("CPUbrand"));
+  }
+  // Sort the tab by Socket
+  function sortBySocket() {
+    setSorting(SortingObject("CPUSockets"));
   }
   // Sort the tab by litho
   function sortByLitho() {
-    if (
-      parseInt(components[0].CPUlithograph.match(/\d+/)) <=
-      parseInt(components[components.length-1].CPUlithograph.match(/\d+/))
-    ) {
-      setComponents([
-        ...components.sort(
-          (c, cs) =>
-            parseInt(cs.CPUlithograph.match(/\d+/)) -
-            parseInt(c.CPUlithograph.match(/\d+/))
-        ),
-      ]);
-    } else {
-      setComponents([
-        ...components.sort(
-          (c, cs) =>
-            parseInt(c.CPUlithograph.match(/\d+/)) -
-            parseInt(cs.CPUlithograph.match(/\d+/))
-        ),
-      ]);
-    }
+    setSorting(SortingObject("CPUlithograph"));
+  }
+  // Sort the tab by Core count
+  function sortByCoreCount() {
+    setSorting(SortingObject("CPUcoreCount"));
+  }
+  // Sort the tab by Thread Count
+  function sortByThreadCount() {
+    setSorting(SortingObject("CPUthreadCount"));
+  }
+  // Sort the tab by Cache size
+  function sortByCache() {
+    setSorting(SortingObject("CPUcache"));
+  }
+  // Sort the tab by clock speed
+  function sortByClockSpeed() {
+    setSorting(SortingObject("CPUclockSpeed"));
+  }
+  // Sort the tab by Max clock Speed
+  function sortByMaxClockSpeed() {
+    setSorting(SortingObject("CPUmaxClockSpeed"));
+  }
+  // Sort the tab by Bus size
+  function sortByBus() {
+    setSorting(SortingObject("CPUbus"));
+  }
+  // Sort the tab by Memory Type
+  function sortByMemoryType() {
+    setSorting(SortingObject("CPUtypeMemory"));
+  }
+  // Sort the tab by Max Memory
+  function sortByMaxMem() {
+    setSorting(SortingObject("CPUmaxMemory"));
+  }
+  // Sort the tab by Memory bandwith
+  function sortByMemoryBandwith() {
+    setSorting(SortingObject("CPUmaxMemoryBandwidth"));
+  }
+  // Sort the tab by Memory Channel
+  function sortByMemoryChannel() {
+    setSorting(SortingObject("CPUnumberMemoryChannel"));
+  }
+  // Sort the tab by ECC memory support
+  function sortByECCMemory() {
+    setSorting(SortingObject("CPUsupportECCMemory"));
+  }
+  // Sort the tab by ITG
+  function sortByITG() {
+    setSorting(SortingObject("CPUitgdGraphic"));
+  }
+  // Sort the tab by litho
+  function sortByITGFreq() {
+    setSorting(SortingObject("CPUitgdGraphicFreq"));
+  }
+  // Sort the tab by ITG max frequence
+  function sortByITGMaxFreq() {
+    setSorting(SortingObject("CPUitgdGraphicMaxFreq"));
+  }
+  // Sort the tab by ITG max memory
+  function sortByITGMaxMem() {
+    setSorting(SortingObject("CPUitgdGraphicMaxMemory"));
+  }
+  // Sort the tab by ITG4K
+  function sortByITG4k() {
+    setSorting(SortingObject("CPUitgdGraphicSupport4K"));
+  }
+  // Sort the tab by TDP
+  function sortByTDP() {
+    setSorting(SortingObject("CPUmaxTDP"));
+  }
+  // Sort the tab by Temp
+  function sortByTemp() {
+    setSorting(SortingObject("CPUmaxTemp"));
   }
 
+  /* FUNCTION  TO HANDLE INPUT */
   //   To change between focus of the list to the input
   function handleClick(index) {
     setComponent(components[index]);
@@ -301,46 +516,89 @@ export default function ListCompo() {
                     <div className="W100 HeadTab" onClick={sortByName}>
                       Name
                     </div>
-                    <div className="W100 HeadTab">CodeName</div>
-                    <div className="W100 HeadTab">Price</div>
-                    <div className="W100 HeadTab">Date</div>
-                    <div className="W100 HeadTab">Brand</div>
-                    <div className="W100 HeadTab">Socket</div>
+                    <div className="W100 HeadTab" onClick={sortByCodeName}>
+                      CodeName
+                    </div>
+                    <div className="W100 HeadTab" onClick={sortByPrice}>
+                      Price
+                    </div>
+                    <div className="W100 HeadTab" onClick={sortByDate}>
+                      Date
+                    </div>
+                    <div className="W100 HeadTab" onClick={sortByBrand}>
+                      Brand
+                    </div>
+                    <div className="W100 HeadTab" onClick={sortBySocket}>
+                      Socket
+                    </div>
                     <div className="W100 HeadTab" onClick={sortByLitho}>
                       Lithographie
                     </div>
-                    <div className="W100 HeadTab">CoreCount</div>
-                    <div className="W100 HeadTab">ThreadCount</div>
-                    <div className="W100 HeadTab">Cache</div>
-                    <div className="W100 HeadTab">ClockSpeed</div>
-                    <div className="W150 HeadTab">MaxClockSpeed</div>
-                    <div className="W100 HeadTab">Bus</div>
-                    <div className="W100 HeadTab">Memory Type</div>
-                    <div className="W100 HeadTab">Max Memory</div>
-                    <div className="W100 HeadTab">Memory BandWith</div>
-                    <div className="W100 HeadTab">Number of Memory Channel</div>
-                    <div className="W100 HeadTab">Support ECC Memory</div>
-                    <div className="W150 HeadTab">IntegratedGraphic</div>
-                    <div className="W150 HeadTab">IntegratedGraphic Freq</div>
-                    <div className="W150 HeadTab">
+                    <div className="W100 HeadTab" onClick={sortByCoreCount}>
+                      CoreCount
+                    </div>
+                    <div className="W100 HeadTab" onClick={sortByThreadCount}>
+                      ThreadCount
+                    </div>
+                    <div className="W100 HeadTab" onClick={sortByCache}>
+                      Cache
+                    </div>
+                    <div className="W100 HeadTab" onClick={sortByClockSpeed}>
+                      ClockSpeed
+                    </div>
+                    <div className="W150 HeadTab" onClick={sortByMaxClockSpeed}>
+                      MaxClockSpeed
+                    </div>
+                    <div className="W100 HeadTab" onCanPlay={sortByBus}>
+                      Bus
+                    </div>
+                    <div className="W100 HeadTab" onClick={sortByMemoryType}>
+                      Memory Type
+                    </div>
+                    <div className="W100 HeadTab" onClick={sortByMaxMem}>
+                      Max Memory
+                    </div>
+                    <div
+                      className="W100 HeadTab"
+                      onClick={sortByMemoryBandwith}
+                    >
+                      Memory BandWith
+                    </div>
+                    <div className="W100 HeadTab" onClick={sortByMemoryChannel}>
+                      Number of Memory Channel
+                    </div>
+                    <div className="W100 HeadTab" onClick={sortByECCMemory}>
+                      Support ECC Memory
+                    </div>
+                    <div className="W150 HeadTab" onClick={sortByITG}>
+                      IntegratedGraphic
+                    </div>
+                    <div className="W150 HeadTab" onClick={sortByITGFreq}>
+                      IntegratedGraphic Freq
+                    </div>
+                    <div className="W150 HeadTab" onClick={sortByITGMaxFreq}>
                       IntegratedGraphic Max Freq
                     </div>
-                    <div className="W150 HeadTab">
+                    <div className="W150 HeadTab" onClick={sortByITGMaxMem}>
                       IntegratedGraphic Max Memory
                     </div>
-                    <div className="W150 HeadTab">
+                    <div className="W150 HeadTab" onClick={sortByITG4k}>
                       IntegratedGraphic 4k support
                     </div>
-                    <div className="W100 HeadTab">TDP</div>
-                    <div className="W100 HeadTab">Max Temp</div>
+                    <div className="W100 HeadTab" onClick={sortByTDP}>
+                      TDP
+                    </div>
+                    <div className="W100 HeadTab" onClick={sortByTemp}>
+                      Max Temp
+                    </div>
                   </div>
                   <div className="">
+                    {/* Liste of all the spec */}
                     {components.map((c, i) => (
                       <div className="dblock parent" key={c.idComponent}>
                         <div className="W100 mx10">
                           <img src={c.ComponentImage} alt={c.idComponent} />
                         </div>
-                        {/* Liste of all the spec */}
                         <div className="W100">{c.idCPU}</div>
                         <div className="W100">{c.ComponentName}</div>
                         <div className="W100">{c.CPUcodeName}</div>
